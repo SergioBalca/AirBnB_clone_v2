@@ -13,7 +13,8 @@ class FileStorage:
         if cls is not None:
             dict = {}
             for i, j in FileStorage.__objects.items():
-                dict[i] = j
+                if isinstance(j, cls):
+                    dict[i] = j
             return dict
         return FileStorage.__objects
 
