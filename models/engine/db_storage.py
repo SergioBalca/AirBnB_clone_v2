@@ -25,13 +25,11 @@ class DBStorage:
         mysql_db = getenv('HBNB_MYSQL_DB')
         mysql_env = getenv('HBNB_ENV')
 
-        try:
-            self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                          format(mysql_user, mysql_pwd,
-                                                 mysql_host, mysql_db),
-                                          pool_pre_ping=True)
-        except NameError as mess:
-            print(mess)
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
+                                      format(mysql_user, mysql_pwd,
+                                             mysql_host, mysql_db),
+                                      pool_pre_ping=True)
+
         if mysql_env == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -72,8 +70,8 @@ class DBStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
+
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
-        session = scoped_session(session_factory)
-        self.__session = session
+        self.__session = scoped_session(session_factory)
