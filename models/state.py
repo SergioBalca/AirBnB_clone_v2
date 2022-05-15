@@ -17,11 +17,6 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-    def __init__(self, *args, **kwargs):
-        """ Initializes State. """
-        super().__init__(*args, **kwargs)
-
-    if models.env_storage != 'bd':
         @property
         def cities(self):
             """getter attribute cities that returns the list of City

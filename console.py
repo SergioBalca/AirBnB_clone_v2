@@ -35,7 +35,7 @@ class HBNBCommand(cmd.Cmd):
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb)')
+            print('(hbnb) ', end="")
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -137,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
                 setattr(new_instance, key, value)
             except Exception:
                 pass
-        storage.save()
+        storage.new(new_instance)
         print(new_instance.id)
         storage.save()
 
@@ -334,47 +334,6 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-
-    def default(self, args):
-        """ Retrieve all instances of a class. """
-        count = 0
-        splitline = args.split('.', 1)
-        if len(splitline) >= 2:
-            args = splitline[1].split('(')
-            if args[0] == 'all':
-                self.do_all(splitline[0])
-            elif args[0] == 'count':
-                for key in storage.all():
-                    if splitline[0] == key.split(".")[0]:
-                        count += 1
-                print(count)
-            elif args[0] == 'show':
-                id = args[1].split(')')
-                str_id = str(splitline[0]) + " " + str(id[0])
-                self.do_show(str_id)
-            elif args[0] == 'destroy':
-                id = args[1].split(')')
-                str_id = str(splitline[0]) + " " + str(id[0])
-                self.do_destroy(str_id)
-            elif args[0] == 'update':
-                update = args[1].split(')')
-                split = update[0].split('{')
-                if len(split) == 1:
-                    # Caso de establecer manualmente la clave y el valor
-                    arg = update[0].split(",")
-                    str_id = str(splitline[0]) + " " + str(arg[0]) + \
-                        " " + str(arg[1]) + " " + str(arg[2])
-                    self.do_update(str_id)
-                else:
-                    # Caso de establecer clave y valor por diccionario
-                    id = split[0][:-2]
-                    str_dict = split[1][:-1]
-                    delim = str_dict.split(',')
-                    for row in delim:
-                        key_value = row.split(':')
-                        str_id = str(splitline[0]) + " " + str(id) + \
-                            " " + str(key_value[0]) + " " + str(key_value[1])
-                        self.do_update(str_id)
 
 
 if __name__ == "__main__":
