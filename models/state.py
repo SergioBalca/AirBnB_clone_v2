@@ -9,13 +9,11 @@ import models
 
 class State(BaseModel, Base):
     """ State class """
-    if models.env_storage == 'bd':
-        __tablename__ = 'states'
-        name = Column(String(128), nullable=False)
-        cities = relationship("City", cascade="all, delete", backref="state")
-    else:
-        name = ""
+    __tablename__ = 'states'
+    name = Column(String(128), nullable=False)
+    cities = relationship("City", cascade="all, delete", backref="state")
 
+    if models.env_storage != 'db':
         @property
         def cities(self):
             """getter attribute cities that returns the list of City

@@ -7,8 +7,5 @@ from sqlalchemy import Column, String
 
 class Amenity(BaseModel, Base):
     """Amenity to have"""
-    if models.env_storage == 'db':
-        __tablename__ = 'amenities'
-        name = Column(String(128), nullable=False)
-    else:
-        name = ""
+    __tablename__ = 'amenities'
+    name = Column(String(128), nullable=False)

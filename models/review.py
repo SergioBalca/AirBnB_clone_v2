@@ -7,12 +7,7 @@ import models
 
 class Review(BaseModel, Base):
     """ Review classto store review information """
-    if models.env_storage == 'db':
-        __tablename__ = 'reviews'
-        text = Column(String(1024), nullable=False)
-        place_id = Column(String(60), ForeignKey('places.id'), nullable=False)
-        user_id = Column(String(60), ForeignKey('users_id'), nullable=False)
-    else:
-        place_id = ""
-        user_id = ""
-        text = ""
+    __tablename__ = 'reviews'
+    text = Column(String(1024), nullable=False)
+    place_id = Column(String(60), ForeignKey('places.id'), nullable=False)
+    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
