@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """ DBstorage module """
-
 from sqlalchemy import (create_engine)
 from os import getenv
 from base_model import Base, BaseModel
@@ -33,8 +32,8 @@ class DBStorage:
         mysql_env = getenv('HBNB_ENV')
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(mysql_db, mysql_user,
-                                             mysql_host, mysql_pwd),
+                                      format(mysql_pwd, mysql_user,
+                                             mysql_host, mysql_db),
                                       pool_pre_ping=True)
 
         if mysql_env == "test":
@@ -43,12 +42,17 @@ class DBStorage:
         def all(self, cls=None):
             """Return a dictionary currently in the session"""
             dict = {}
-            for c in classes:
-                if cls is None or cls is classes[c]:
-                    objs = self.__session.query(classes[cls]).all()
+            if cls is not None:
+                objs = self.__session.query(cls).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    dict[key] = obj.to_dict()
+            else:
+                for some in classes:
+                    objs = self.__session.query(classes[some]).all()
                     for obj in objs:
                         key = obj.__class__.__name__ + '.' + obj.id
-                        dict[key] = obj
+                        dict[key] = obj.to_dict()
             return dict
 
         def new(self, obj):
@@ -67,6 +71,7 @@ class DBStorage:
         def reload(self):
             """"""
             Base.metadata.create_all(self.__engine)
-            session = sessionmaker(bind=self.__engine,
-                                   expire_on_commit=False)
-            self.__session = scoped_session(session)
+            session_factory = sessionmaker(bind=self.__engine,
+                                           expire_on_commit=False)
+            session = scoped_session(session_factory)
+            self.__session = session

@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 """This module defines a class User"""
-from models.base_model import Base, BaseModel
 import models
+try:
+    from models.base_model import BaseModel, Base
+except Exception as mess:
+    print(mess)
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
