@@ -130,16 +130,16 @@ class HBNBCommand(cmd.Cmd):
                 splitarg = splitline[arg].split("=")
                 key = splitarg[0]
                 value = splitarg[1]
-                value = value.replace('_', ' ')
+                value = value.strip('\"').replace('_', ' ')
                 value = eval(value)
                 if type(value) != (str, float, int):
                     raise Exception(Exception)
-                setattr(new_instance, key, value)
+                storage.all()[key] = value.to_dict()
             except Exception:
                 pass
         storage.new(new_instance)
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
