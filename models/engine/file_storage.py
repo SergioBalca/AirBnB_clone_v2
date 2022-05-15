@@ -8,6 +8,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import os.path
 
 
 class FileStorage:
@@ -21,7 +22,7 @@ class FileStorage:
             dict = {}
             for i, j in FileStorage.__objects.items():
                 if isinstance(j, type(cls)):
-                    dict[i] = j
+                    dict[i] = j.to_dict()
             return dict
         else:
             return FileStorage.__objects
@@ -32,12 +33,11 @@ class FileStorage:
 
     def save(self):
         """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
-            json.dump(temp, f)
+        new_dict = {}
+        for key, value in self.__objects.items():
+            new_dict[key] = value.to_dict()
+        with open(self.__file_path, 'w') as file:
+            json.dump(new_dict, file)
 
     def reload(self):
         """Loads storage dictionary from file"""
@@ -46,14 +46,14 @@ class FileStorage:
                     'State': State, 'City': City, 'Amenity': Amenity,
                     'Review': Review
                   }
-        try:
-            temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
-        except Exception:
-            pass
+
+        if os.path.exists(self.__file_path):
+            with open(self.__file_path, 'r') as file:
+                new_dict = json.load(file)
+            for key, value in new_dict.items():
+                object = value['__class__']
+                objects = object + '(**value)'
+                self.__objects[key] = eval(objects)
 
     def delete(self, obj=None):
         """Delete an object from the __object dictionary"""
