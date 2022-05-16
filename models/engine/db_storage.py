@@ -68,7 +68,7 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        """"""
+        """Public instance method that reload instances from db storage"""
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
