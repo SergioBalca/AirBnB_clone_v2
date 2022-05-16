@@ -15,7 +15,7 @@ class FileStorage:
             dict = {}
             for i, j in FileStorage.__objects.items():
                 if isinstance(j, type(cls)):
-                    dict[i] = j.to_dict()
+                    dict[i] = j
             return dict
         else:
             return FileStorage.__objects
@@ -57,7 +57,9 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Delete an object from the __object dictionary"""
-        if obj is not None:
+        if obj is not None and obj in FileStorage.__objects.items():
+            # key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            # del self.__objects[key]
             for i, j in FileStorage.__objects.items():
                 if j == obj:
                     del FileStorage.__objects[i]
