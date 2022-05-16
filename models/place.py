@@ -38,7 +38,9 @@ class Place(BaseModel, Base):
 
     @property
     def reviews(self):
-        """"""
+        """ Getter attribute that returns the list of Review
+            instances with place_id equals to current Place.id
+        """
         list = []
         for i in models.storage.all(Review).values():
             if Review.place_id == self.id:
@@ -47,7 +49,10 @@ class Place(BaseModel, Base):
 
     @property
     def amenities(self):
-        """"""
+        """ Getter attribute that returns the list of Amenity intances
+            based on the attribute amenity_ids that contains all
+            Amenity.id linked to the Place
+        """
         list = []
         for i in models.storage.all(Amenity).values():
             if amenity.place_id == self.id:
