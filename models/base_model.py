@@ -7,10 +7,7 @@ from sqlalchemy import Column, String, DateTime
 from models import env_storage
 import models
 
-if env_storage == 'db':
-    Base = declarative_base()
-else:
-    Base = object
+Base = declarative_base()
 
 
 class BaseModel:
@@ -54,8 +51,7 @@ class BaseModel:
         dictionary.update(self.__dict__)
         if '_sa_instance_state' in dictionary:
             del dictionary['_sa_instance_state']
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+        dictionary['__class__'] = self.__class__.__name__
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary

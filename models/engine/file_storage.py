@@ -8,7 +8,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-import os.path
 
 
 class FileStorage:
@@ -46,14 +45,14 @@ class FileStorage:
                     'State': State, 'City': City, 'Amenity': Amenity,
                     'Review': Review
                   }
-
-        if os.path.exists(self.__file_path):
-            with open(self.__file_path, 'r') as file:
-                new_dict = json.load(file)
-            for key, value in new_dict.items():
-                object = value['__class__']
-                objects = object + '(**value)'
-                self.__objects[key] = eval(objects)
+        try:
+            temp = {}
+            with open(FileStorage.__file_path, 'r') as f:
+                temp = json.load(f)
+                for key, val in temp.items():
+                    self.all()[key] = classes[val['__class__']](**val)
+        except FileNotFoundError:
+            pass
 
     def delete(self, obj=None):
         """Delete an object from the __object dictionary"""
