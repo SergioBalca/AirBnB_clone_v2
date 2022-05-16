@@ -13,13 +13,12 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
     cities = relationship("City", cascade="all, delete", backref="state")
 
-    if models.env_storage != 'db':
-        @property
-        def cities(self):
-            """getter attribute cities that returns the list of City
-            instances with state_id equals to the current State.id"""
-            id_list = []
-            for i in models.storage.all(City).values():
-                if City.state_id == self.id:
-                    id_list.append(i)
-            return id_list
+    @property
+    def cities(self):
+        """getter attribute cities that returns the list of City
+        instances with state_id equals to the current State.id"""
+        id_list = []
+        for i in models.storage.all(City).values():
+            if City.state_id == self.id:
+                id_list.append(i)
+        return id_list

@@ -134,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
                 value = eval(value)
                 if type(value) != (str, float, int):
                     raise Exception(Exception)
-                storage.all()[key] = value.to_dict()
+                setattr(new_instance, key, value)
             except Exception:
                 pass
         storage.new(new_instance)
@@ -225,7 +225,7 @@ class HBNBCommand(cmd.Cmd):
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage.all().items():
+            for k, v in storage.all(HBNBCommand.classes).items():
                 print_list.append(str(v))
 
         print(print_list)
