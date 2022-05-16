@@ -32,9 +32,9 @@ class DBStorage:
         mysql_env = getenv('HBNB_ENV')
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                          format(mysql_user, mysql_pwd,
-                                                 mysql_host, mysql_db),
-                                          pool_pre_ping=True)
+                                      format(mysql_user, mysql_pwd,
+                                             mysql_host, mysql_db),
+                                      pool_pre_ping=True)
         if mysql_env == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -68,7 +68,7 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        """"""
+        """Public instance method that reload instances from db storage"""
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
