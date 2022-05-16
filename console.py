@@ -125,18 +125,26 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[splitline[0]]()
-        for arg in range(1, len(splitline)):
+        dict = {}
+        for arg in splitline[1:]:
+            arg_split = arg.split("=")
+            key = arg_split[0]
+            value = arg_split[1]
             try:
-                splitarg = splitline[arg].split("=")
-                key = splitarg[0]
-                value = splitarg[1]
-                value = value.strip('\"').replace('_', ' ')
-                value = eval(value)
-                if type(value) != (str, float, int):
-                    raise Exception(Exception)
-                setattr(new_instance, key, value)
+                if value[0] == '"':
+                    value = value.strip('"')
+                    value = value.replace('"', '\"')
+                    value = value.replace('_', ' ')
+                elif value.find('.'):
+                    value = float(value)
+                else:
+                    value = int(value)
             except Exception:
-                pass
+                continue
+            dict[key] = value
+        if dict:
+            for k, v in dict.items():
+                setattr(new_instance, k, v)
         storage.new(new_instance)
         print(new_instance.id)
         storage.save()
