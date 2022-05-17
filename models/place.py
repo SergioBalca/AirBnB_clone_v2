@@ -30,9 +30,8 @@ class Place(BaseModel, Base):
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
         reviews = relationship("Review", cascade="all, delete",
-                               backref="place")
-        amenities = relationship("Amenity", secondary="place_amenity",
-                                 viewonly=False)
+                               backref="state")
+        amenities = []
     else:
         city_id = ''  # City.id
         user_id = ''  # User.id
@@ -54,7 +53,7 @@ class Place(BaseModel, Base):
             from models.review import Review
             list = []
             for i in models.storage.all(Review).values():
-                if Review.place_id == self.id:
+                if i.place_id == self.id:
                     list.append(i)
             return list
 
@@ -67,7 +66,7 @@ class Place(BaseModel, Base):
             from models.amenity import Amenity
             list = []
             for i in models.storage.all(Amenity).values():
-                if Amenity.place_id == self.id:
+                if i.place_id == self.id:
                     list.append(i)
             return list
 
@@ -75,5 +74,5 @@ class Place(BaseModel, Base):
         def amenities(self, obj=None):
             """Add an Amenity id to the list Amenity_ids"""
             from models.amenity import Amenity
-            if obj is not None and isinstance(obj, Amenity):
+            if isinstance(obj, Amenity):
                 self.amenity_ids.append(obj.id)
