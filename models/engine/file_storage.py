@@ -60,7 +60,7 @@ class FileStorage:
         if obj is not None:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             del self.__objects[key]
-    
+
     def close(self):
         """ public method that calls reload method for
             deserializing the JSON file to object
