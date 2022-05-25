@@ -19,7 +19,7 @@ class State(BaseModel, Base):
         class State(BaseModel):
             """ State class """
             name = ''
-        
+
             @property
             def cities(self):
                 """ getter attribute cities that returns the list of City
