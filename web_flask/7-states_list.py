@@ -16,3 +16,7 @@ def states_list():
 def close_session():
     """Method to handle tear_down_appcontext"""
     storage.close()
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
