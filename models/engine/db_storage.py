@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" DBstorage module """
+"""DBstorage module"""
 from models.base_model import Base, BaseModel
 from sqlalchemy import (create_engine)
 from os import getenv
