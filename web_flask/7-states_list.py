@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""web application that fetches data from the storage engine"""
+""" web application that fetches data from the storage engine """
 from flask import Flask, render_template
 from models import storage
 from models.state import State
